@@ -2,11 +2,10 @@ package com.payment.parser.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.opencsv.bean.CsvBindByName;
-
-import java.math.BigDecimal;
-
-import static java.util.Objects.requireNonNull;
+import com.payment.dto.ParserResult;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Payment record
@@ -14,55 +13,31 @@ import static java.util.Objects.requireNonNull;
  * @author Churmeev Dmitriy
  * @since 16.02.2021
  */
+@Getter
+@Setter
+@ToString
 public class PaymentRecord {
 
-    @CsvBindByName(required = true, column = "Идентификатор ордера")
     private Long orderId;
-    @CsvBindByName(required = true, column = "сумма")
-    private BigDecimal amount;
-    @CsvBindByName(required = true, column = "валюта")
+    private Double amount;
     private CurrencyType currency;
-    @CsvBindByName(required = true, column = "комментарий")
     private String comment;
+    private ParserResult parserResult;
 
     @JsonCreator
     public PaymentRecord(@JsonProperty("orderId") Long orderId,
-                         @JsonProperty("amount") BigDecimal amount,
+                         @JsonProperty("amount") Double amount,
                          @JsonProperty("currency") CurrencyType currency,
-                         @JsonProperty("comment") String comment) {
-        this.orderId = requireNonNull(orderId);
-        this.amount = requireNonNull(amount);
-        this.currency = requireNonNull(currency);
-        this.comment = requireNonNull(comment);
+                         @JsonProperty("comment") String comment,
+                         @JsonProperty("parserResult") ParserResult parserResult) {
+        this.orderId = orderId;
+        this.amount = amount;
+        this.currency = currency;
+        this.comment = comment;
+        this.parserResult = parserResult;
     }
 
-    public PaymentRecord() {
-
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public CurrencyType getCurrency() {
-        return currency;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    @Override
-    public String toString() {
-        return "PaymentDto{" +
-                "orderId=" + orderId +
-                ", amount=" + amount +
-                ", currency=" + currency +
-                ", comment='" + comment + '\'' +
-                '}';
+    public PaymentRecord(ParserResult parserResult) {
+        this.parserResult = parserResult;
     }
 }

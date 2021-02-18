@@ -17,5 +17,5 @@ public interface PaymentParser {
      * @param file file name with Payment Record
      * @return List Payment Record {@link PaymentRecord}
      */
-    List<PaymentRecord> parse(String file);
+    List<PaymentRecord> parsePaymentRecord(String file);
 }

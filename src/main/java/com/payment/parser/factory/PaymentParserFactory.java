@@ -24,7 +24,7 @@ public class PaymentParserFactory {
 
         Optional<FileType> fileTypeFromFile = getFileTypeFormatFile(fileName);
 
-        if (fileTypeFromFile.isEmpty()) {
+        if (!fileTypeFromFile.isPresent()) {
             log.error("Not found file type for file " + fileName);
             return Optional.empty();
         }

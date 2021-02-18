@@ -7,15 +7,11 @@ package com.payment.dto;
  * @author Churmeev Dmitriy
  * @since 18.02.2021
  */
-public enum PaymentResult {
+public enum ParserResult {
     /**
      * Success payment
      */
     OK,
-    /**
-     * Error during payment
-     */
-    ERROR,
     /**
      * Fail payment
      */

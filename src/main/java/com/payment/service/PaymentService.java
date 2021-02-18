@@ -1,10 +1,9 @@
 package com.payment.service;
 
 import com.payment.dto.PaymentDto;
-import com.payment.dto.PaymentResult;
-import com.payment.parser.model.PaymentRecord;
 import com.payment.parser.PaymentParser;
 import com.payment.parser.factory.PaymentParserFactory;
+import com.payment.parser.model.PaymentRecord;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,27 +51,22 @@ public class PaymentService {
      * @param fileName file name
      */
     public void parseFile(String fileName) {
-        try {
-            Optional<PaymentParser> parser = paymentParserFactory.getParser(fileName);
+        Optional<PaymentParser> parser = paymentParserFactory.getParser(fileName);
 
-            if (parser.isEmpty()) {
-                String errorMessage = String.format("Not found parser for file %s", fileName);
-                log.error(errorMessage);
-                return;
-            }
-
-            PaymentParser paymentParser = parser.get();
-            executor.submit(() -> outPaymentsToConsole(fileName, paymentParser) );
-        } catch (Exception e) {
-            String errorMessage = String.format("Error during parse file %s", fileName);
-            log.error(errorMessage, e);
+        if (!parser.isPresent()) {
+            String errorMessage = String.format("Not found parser for file %s", fileName);
+            log.error(errorMessage);
+            return;
         }
+
+        PaymentParser paymentParser = parser.get();
+        executor.submit(() -> outPaymentsToConsole(fileName, paymentParser));
     }
 
     private void outPaymentsToConsole(String fileName, PaymentParser paymentParser) {
-        List<PaymentRecord> paymentRecords = paymentParser.parse(fileName);
+        List<PaymentRecord> paymentRecords = paymentParser.parsePaymentRecord(fileName);
         IntStream.range(0, paymentRecords.size())
-                .forEach(index -> System.out.println(wrap(paymentRecords.get(index), fileName, index + 1)));
+                .forEach(lineNumber -> System.out.println(wrap(paymentRecords.get(lineNumber), fileName, lineNumber + 1)));
     }
 
     private PaymentDto wrap(PaymentRecord paymentRecord, String file, int line) {
@@ -80,10 +74,9 @@ public class PaymentService {
                 .filename(file)
                 .line(line)
                 .amount(paymentRecord.getAmount())
-                .result(PaymentResult.OK)
+                .result(paymentRecord.getParserResult())
                 .comment(paymentRecord.getComment())
                 .id(paymentRecord.getOrderId())
                 .build();
     }
-
 }

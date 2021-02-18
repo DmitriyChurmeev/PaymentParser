@@ -2,10 +2,6 @@ package com.payment.dto;
 
 import lombok.Builder;
 
-import java.math.BigDecimal;
-
-import static java.util.Objects.requireNonNull;
-
 /**
  * Dto of Payment record
  *
@@ -16,21 +12,21 @@ import static java.util.Objects.requireNonNull;
 public class PaymentDto {
 
     private final Long id;
-    private final BigDecimal amount;
+    private final Double amount;
     private final String comment;
     private final String filename;
     private final Integer line;
-    private final PaymentResult result;
+    private final ParserResult result;
 
     public PaymentDto(Long id,
-                      BigDecimal amount,
+                      Double amount,
                       String comment,
                       String filename,
                       Integer line,
-                      PaymentResult result) {
-        this.id = requireNonNull(id);
-        this.amount = requireNonNull(amount);
-        this.comment = requireNonNull(comment);
+                      ParserResult result) {
+        this.id = id;
+        this.amount = amount;
+        this.comment = comment;
         this.filename = filename;
         this.line = line;
         this.result = result;
@@ -40,7 +36,7 @@ public class PaymentDto {
         return id;
     }
 
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
@@ -56,7 +52,7 @@ public class PaymentDto {
         return line;
     }
 
-    public PaymentResult getResult() {
+    public ParserResult getResult() {
         return result;
     }
 

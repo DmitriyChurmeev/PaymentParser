@@ -1,0 +1,8 @@
+[
+  {
+    "orderId":1,
+    "amount":"amount 1.23",
+    "currency":456,
+    "comment":123
+  }
+]
