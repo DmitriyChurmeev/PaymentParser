@@ -4,9 +4,20 @@ package com.payment.dto;
  *
  * Result of Payment record
  *
- * @author Churmeev Dmitriy (churmeev@yoomoney.ru)
+ * @author Churmeev Dmitriy
  * @since 18.02.2021
  */
 public enum PaymentResult {
-    OK
+    /**
+     * Success payment
+     */
+    OK,
+    /**
+     * Error during payment
+     */
+    ERROR,
+    /**
+     * Fail payment
+     */
+    FAIL,
 }
